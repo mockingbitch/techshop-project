@@ -234,7 +234,9 @@
 
                     <!-- store bottom filter -->
                     <div class="store-filter clearfix" align="center" style="margin: 100px">
-                        {!! $products->links("pagination::bootstrap-4") !!}
+                       @if (isset($products->links))
+                       {!! $products->links("pagination::bootstrap-4") !!}
+                       @endif
                     </div>
                     <!-- /store bottom filter -->
                 </div>

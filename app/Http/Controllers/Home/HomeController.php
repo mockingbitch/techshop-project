@@ -55,7 +55,8 @@ class HomeController extends Controller
     }
     public function search(Request $request){
         $products = $this->productRepo->search($request);
-        return view('home.pages.search',compact('products'));
+        $categories = $this->categoryRepo->getAll();
+        return view('home.pages.list-product',compact('products','categories'));
     }
     public function getAll(){
         $categories = $this->categoryRepo->getAll();
