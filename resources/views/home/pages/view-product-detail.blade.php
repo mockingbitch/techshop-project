@@ -89,13 +89,13 @@
                             <div class="qty-label">
                                 Quantity
                                 <div class="input-number">
-                                    <input type="number" value="1" min="1">
+                                    <input type="number" class="quantity" name="quantity" value="1" min="1">
                                     <span class="qty-up">+</span>
                                     <span class="qty-down">-</span>
                                 </div>
                             </div>
                             @if($product->stock->quantity>0)
-                                <button class="add-to-cart-btn" onclick="addCart({{$product->id}})"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                                <button class="add-to-cart-btn" onclick="addCartWithQuantity({{$product->id}})"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
                             @elseif($product->stock->quantity<=0)
                                 <button class="add-to-cart-btn" ><i class="fa fa-shopping-cart"></i>Out of Stock</button>
 
@@ -385,4 +385,13 @@
         </div>
         <!-- /container -->
     </div>
+    <script>
+         function addCartWithQuantity(id){
+            quantity = $(".quantity").val();
+            $.get('{{route('add-to-cart-quantity')}}' ,{"id":id,"quantity":quantity},function(data){
+            swal("...", "Đã thêm vào giỏ hàng!", "success");
+        });
+    }
+    </script>
 @endsection
+

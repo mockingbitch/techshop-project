@@ -196,6 +196,7 @@
                         <!-- product -->
                             <div class="col-md-4 col-xs-6">
                                 <div class="product">
+                                    <a href="{{route('view-product',['id' => $product->id])}}}">
                                     <div class="product-img">
                                         <img src="{{asset('uploads/product/'.$product->productImage)}}" alt="">
                                         <div class="product-label">
@@ -203,8 +204,8 @@
                                             <span class="new">NEW</span>
                                         </div>
                                     </div>
+                                    </a>
                                     <div class="product-body">
-                                        <!--                                <p class="product-category">Category</p>-->
                                         <h3 class="product-name"><a href="{{route('view-product',['id'=>$product->id])}}">{{$product->productName}}</a></h3>
                                         <h4 class="product-price">{{number_format($product->productPrice)}} Đ</h4>
                                         <div class="product-rating">

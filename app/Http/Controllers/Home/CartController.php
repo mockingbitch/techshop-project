@@ -7,6 +7,7 @@ use App\Repositories\Contracts\RepositoryInterface\CategoryRepositoryInterface;
 use App\Services\CartService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
+use App\Http\Requests\CheckOutRequest;
 use Illuminate\Support\Facades\Auth;
 use Mail;
 use Str;
@@ -24,8 +25,13 @@ class CartController extends Controller
 
     public function add(Request $request){
         $id = $request->query('id');
-        //session()->flush('cart');
+       
         $this->cartService->add($id);
+    }
+    public function addMany(Request $request){
+        $id = $request->query('id');
+        $quantity = $request->query('quantity');
+        $this->cartService->addMany($id,$quantity);
     }
     public function index(){
         $carts = session()->get('cart');
@@ -46,7 +52,7 @@ class CartController extends Controller
         $customer = Auth::guard('customer')->user();
         return view('home.pages.checkout',compact('carts','customer'));
     }
-    public function addOrder(Request $request){
+    public function addOrder(CheckOutRequest $request){
         $carts = session()->get('cart');
         $customer = Auth::guard('customer')->user();
         if(isset($customer)){

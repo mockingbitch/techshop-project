@@ -115,6 +115,7 @@ Route::get('/product/{id}',[HomeController::class,'productDetail'])->name('view-
 Route::post('/search-by-price',[HomeController::class,'searchByPrice'])->name('search-by-price');
 Route::get('/search',[HomeController::class,'search'])->name('search');
 Route::get('/add-to-cart',[CartController::class,'add'])->name('add-to-cart');
+Route::get('/add-to-cart-quantity',[CartController::class,'addMany'])->name('add-to-cart-quantity');
 Route::get('/view-cart',[CartController::class,'index'])->name('view-cart');
 Route::prefix('cart')->group(function(){
     Route::get('/remove-cart' ,[CartController::class,'delete'])->name('remove-cart');

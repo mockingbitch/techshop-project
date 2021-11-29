@@ -28,6 +28,22 @@ class CartService
         }
         session()->put('cart',$cart);
     }
+    public function addMany($id,$quantity){
+        $products = $this->productRepo->find($id);
+        $cart = session()->get('cart');
+        if(isset($cart[$id])){
+            $cart[$id]['quantity'] = $cart[$id]['quantity'] + $quantity;
+        }else{
+            $cart[$id]=[
+                'id'=>$products->id,
+                'productName'=>$products->productName,
+                'productPrice'=> $products->productPrice,
+                'quantity'=>$quantity,
+                'productImage'=>$products->productImage
+            ];
+        }
+        session()->put('cart',$cart);
+    }
     public function update($id,$quantity){
         if($id && $quantity){
             $cart = session()->get('cart');

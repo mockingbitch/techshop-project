@@ -23,18 +23,6 @@ class AddProductRequestForm extends FormRequest
      *
      * @return array
      */
-//    public function rules()
-//    {
-//        return [
-//            'productName' => $request->productName,
-//            'productDescription' => $request->productDescription,
-//            'productContent' => $request->productContent,
-//            'productPrice'=> $request->productPrice,
-//            'categoryId'=>$request->categoryId,
-//            'brandId'=>$request->brandId,
-//            'productQuantity'=>$request->productQuantity,
-//        ];
-//    }
     public function rules(Request $request)
     {
         $ruleArr = [

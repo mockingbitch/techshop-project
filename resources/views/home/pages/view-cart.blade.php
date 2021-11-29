@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-12" id="list-cart">
                 <!-- Shopping Summery -->
-                @if(isset($carts))
+                @if(isset($carts)&& count($carts)>0)
                 @php
                 $subtotal = 0;
                 @endphp
@@ -49,12 +49,14 @@
                     </tbody>
                 </table>
                 @else
-                <p>Không tồn tại giỏ hàng!!</p>
+                <h2>Chưa có sản phẩm nào trong giỏ hàng. Vui lòng thêm sản phẩm!!!</h2>
+                <h3><a href="{{route('home')}}">Quay trở lại mua sắm</a></h3>
             @endif
             <!--/ End Shopping Summery -->
             </div>
         </div>
         <hr>
+        @if(isset($carts) && count($carts) > 0)
         <div class="row">
             <div class="col-12">
                 <!-- Total Amount -->
@@ -94,6 +96,7 @@
                 <!--/ End Total Amount -->
             </div>
         </div>
+        @endif
     </div>
 </div>
 <script>

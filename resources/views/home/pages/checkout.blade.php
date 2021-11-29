@@ -13,6 +13,11 @@
                             <div class="section-title">
                                 <h3 class="title">Thông tin nhận hàng</h3>
                             </div>
+                            <div>
+                                @foreach ($errors->all() as $error)
+                                    <p class="alert alert-danger">{{$error}}</p>
+                                @endforeach
+                            </div>
                         @if(isset($customer))
                             <div class="form-group">
                                 <input class="input" type="text" name="customerName" value="{{$customer->customerName}}">

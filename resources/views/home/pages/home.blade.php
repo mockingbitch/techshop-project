@@ -79,6 +79,7 @@
                                 <!-- product -->
                                 @foreach($products as $product)
                                 <div class="product">
+                                    <a href="{{route('view-product',['id' => $product->id])}}}">
                                     <div class="product-img">
                                         <img src="{{asset('uploads/product/'.$product->productImage)}}" alt="">
                                         <div class="product-label">
@@ -86,9 +87,10 @@
                                             <span class="new">NEW</span>
                                         </div>
                                     </div>
+                                    </a>
                                     <div class="product-body">
 
-                                        <h3 class="product-name"><a href="#">{{$product->productName}}</a></h3>
+                                        <h3 class="product-name"><a href="{{route('view-product',['id' => $product->id])}}}">{{$product->productName}}</a></h3>
                                         <h4 class="product-price">{{number_format($product->productPrice)}} Đ</h4>
                                         <div class="product-rating">
                                             <i class="fa fa-star"></i>
@@ -240,6 +242,7 @@
                                 <!-- product -->
                                 @foreach($products as $product)
                                 <div class="product">
+                                    <a href="{{route('view-product',['id' => $product->id])}}}">
                                     <div class="product-img">
                                         <img src="{{asset('uploads/product/'.$product->productImage)}}" alt="">
                                         <div class="product-label">
@@ -247,8 +250,9 @@
                                             <span class="new">NEW</span>
                                         </div>
                                     </div>
+                                    </a>
                                     <div class="product-body">
-                                        <h3 class="product-name"><a href="#">{{$product->productName}}</a></h3>
+                                        <h3 class="product-name"><a href="{{route('view-product',['id' => $product->id])}}}">{{$product->productName}}</a></h3>
                                         <h4 class="product-price">{{number_format($product->productPrice)}} Đ</h4>
 
                                         <div class="product-rating">
