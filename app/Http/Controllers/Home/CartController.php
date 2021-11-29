@@ -49,7 +49,12 @@ class CartController extends Controller
     public function addOrder(Request $request){
         $carts = session()->get('cart');
         $customer = Auth::guard('customer')->user();
-        $customerId = $customer->id;
+        if(isset($customer)){
+            $customerId = $customer->id;
+        }
+        else{
+            $customerId = 2;
+        }
         if (isset($carts)){
             $checkOut = $this->cartService->checkOut($carts,$request);
             $code = strtoupper(Str::random(10));

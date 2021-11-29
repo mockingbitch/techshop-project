@@ -48,7 +48,6 @@ class OrderService
                'productImage'=>$cart['productImage'],
                'code'=>$code,
            ];
-//           dd($orderDetail);
            $order = $this->stockService->subtractOrder($orderDetail['productId'],$orderDetail['quantity']);
            if ($order!=false){
                 OrderDetail::create($orderDetail);
@@ -86,24 +85,18 @@ class OrderService
         $order = $this->orderRepo->find($id);
         if ($order['status']==1 || $order['status']==2){
             $msg = '*Đơn hàng đã được xử lý';
-            return $msg;
+            return false;
         }else{
             $this->orderRepo->update($id,$data);
-            $msg = 'Done';
-            return $msg;
         }
     }
     public function shipping($id){
         $data = ['status'=>2];
         $order = $this->orderRepo->find($id);
         if ($order['status']==0 || $order['status']==2){
-            $msg = '*Đơn hàng chưa được xử lý';
-            return $msg;
-
+            return false;
         }else{
             $this->orderRepo->update($id,$data);
-            $msg = 'Done';
-            return $msg;
         }
     }
 }

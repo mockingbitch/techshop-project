@@ -32,10 +32,11 @@ class HomeController extends Controller
         // session()->flush();
         $products = $this->productRepo->getAll();
         $brands = $this->brandRepo->getAll();
+        $categories = $this->categoryRepo->getAll();
         if (isset($carts)){
             $cartQuantity = count($carts);
         }
-        return view('home.pages.home',compact('products','brands'));
+        return view('home.pages.home',compact('products','brands','categories'));
     }
     public function productDetail($id){
         $product = $this->productRepo->find($id);
@@ -44,7 +45,8 @@ class HomeController extends Controller
     }
     public function showCategoryItems($id){
         $products = $this->productRepo->findByCategoryId($id);
-        return view('home.pages.list-product',compact('products',));
+        $categories = $this->categoryRepo->getAll();
+        return view('home.pages.list-product',compact('products','categories'));
     }
     public function logout()
     {

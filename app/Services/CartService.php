@@ -27,7 +27,6 @@ class CartService
             ];
         }
         session()->put('cart',$cart);
-        return response()->json(['code'=>200],200);
     }
     public function update($id,$quantity){
         if($id && $quantity){
@@ -35,24 +34,26 @@ class CartService
             $cart[$id]['quantity'] = (int)$quantity ;
         }
         session()->put('cart',$cart);
-        return response()->json(['code'=>200],200);
     }
     public function delete($id){
         if($id){
             $cart = session()->get('cart');
             unset($cart[$id]);
             session()->put('cart',$cart);
-            return response()->json(['code'=>200],200);
         }
     }
     public function checkOut($carts,$request){
             $customer = Auth::guard('customer')->user();
-            $mail = $customer['email'];
-            $name = $customer['name'];
+            if(isset($customer)){
+                $mail = $customer['email'];
+                $name = $customer['name'];
+            }
+            else{
+                $mail = $request['email'];
+                $name = $request['name'];
+            }
             $order = $request;
-            $quantity = count($carts->quantity);
-            dd($quantity);exit();
-            Mail::send('home.mail.mail-cart',compact('customer','carts','order','quantity'),function($email) use($mail,$name){
+            Mail::send('home.mail.mail-cart',compact('name','carts','order'),function($email) use($mail,$name){
                 $email->subject('Techshop - Xác nhận đơn hàng');
                 $email->to($mail,$name);
             });

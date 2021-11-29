@@ -42,7 +42,7 @@
     </div>
     <br/>
     <h5>Thông tin đơn hàng: </h5>
-    <h5>Tên khách hàng: {{$customer->customerName}}</h5>
+    <h5>Tên khách hàng: {{$name}}</h5>
     <h5>Email: {{$order->email}}</h5>
     <h5>Địa chỉ: {{$order->address}}</h5>
     <h5>Số điện thoại: {{$order->phone}}</h5>
@@ -64,7 +64,7 @@
             <th style="padding-right: 2px;
         padding-left: 2px;
         border:thin solid #d3d3d3;  text-align:left;
-        width: 40%;">Tên</th>
+        width: 40%;text-align:center;">Tên sản phẩm</th>
             <th style="padding-right: 2px;
         padding-left: 2px;
         border:thin solid #d3d3d3;

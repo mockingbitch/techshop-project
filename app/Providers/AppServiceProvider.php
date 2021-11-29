@@ -59,7 +59,10 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('home.homepage', function($view) {
             $customer = Auth::guard('customer')->user();
             $categories = Category::all();
-            view()->share(['customer'=> $customer,'categories'=> $categories]);
+            view()->share([
+               'customer' => $customer,
+               'categories' => $categories
+            ]);
         });
         view()->composer('home.homepage',function($view){
             $carts = session()->get('cart');
@@ -69,6 +72,5 @@ class AppServiceProvider extends ServiceProvider
             }
             view()->share(['cartQuantity'=>$cartQuantity,'carts'=>$carts]);
         });
-        
     }
 }

@@ -69,7 +69,7 @@
                                     </form>
                                 </div>
                                 <div class="checkbox">
-                                    <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Shipping (+10$)</label>
+                                    {{-- <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Shipping (+10$)</label> --}}
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                             <div class="right sub-change" >
                                 <ul>
                                     <li><h4 >Thành tiền: <span>@php if(isset($subtotal)) echo  number_format($subtotal,0,',','.') @endphp Đ</span></h4></li>
-                                    <li>Vận chuyển<span>Free</span></li>
+                                    <li>Vận chuyển:<span>Free</span></li>
                                     Tổng: &emsp; &emsp; <span style="color: red;font-size: 30px;font-weight: bold">@php if(isset($subtotal)) echo number_format($subtotal,0,',','.') @endphp Đ</span>
                                     <li class="last"></li>
                                 </ul>

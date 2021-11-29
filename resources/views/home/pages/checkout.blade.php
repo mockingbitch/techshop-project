@@ -32,7 +32,24 @@
                             </div>
                             <!-- /Order notes -->
                             @else
-                            <h3>Vui lòng <a href="{{route('customer-login-page')}}" style=" font-weight: bold">đăng nhập</a> để tiếp tục.</h3>
+                            <h4>Vui lòng  <a href="{{route('customer-login-page')}}" style=" font-weight: bold">đăng nhập</a> để nhận được nhiều phần quà giá trị hơn.</h4>
+                            <h3>Hoặc mua nhanh</h3>
+                            <div class="form-group">
+                                <input class="input" type="text" name="customerName" placeholder="Customer">
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="email" name="email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="text" name="address" placeholder="Address">
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="tel" name="phone" placeholder="Phone Number">
+                            </div>
+                            <!-- Order notes -->
+                            <div class="order-notes">
+                                <textarea class="input" name="note" placeholder="Note"></textarea>
+                            </div>
                             @endif
                         </div>
 
@@ -76,7 +93,7 @@
                                 <div><strong class="order-total">@php echo number_format($subtotal,0,',','.');@endphp Đ</strong></div>
                             </div>
                         </div>
-                        @if(isset($carts) && isset($customer))
+                        @if(isset($carts) )
                         <div class="payment-method">
                             <div class="input-radio">
                                 <input type="radio" name="payment" id="payment-1">
