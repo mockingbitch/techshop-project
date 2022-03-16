@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: ./docker/
+      dockerfile: DockerFile
+    container_name: laravel
+    restart: always
+    working_dir: /var/www/techshop
+    volumes: 
+      - ./:/var/www/techshop
+  nginx: 
+    image: nginx:1.19-alpine
+    container_name: laravel_nginx
+    restart: always
+    ports:
+      - "8001:80"
+    volumes:
+      - ./:/var/www/techshop
+      - ./docker/nginx:/etc/nginx/conf.d
+

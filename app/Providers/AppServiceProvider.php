@@ -56,21 +56,20 @@ class AppServiceProvider extends ServiceProvider
                 'countOrder'=>$countOrder
             ]);
         });
-        view()->composer('home.homepage', function($view) {
+        view()->composer('home.homepage',function($view){
             $customer = Auth::guard('customer')->user();
             $categories = Category::all();
-            view()->share([
-               'customer' => $customer,
-               'categories' => $categories
-            ]);
-        });
-        view()->composer('home.homepage',function($view){
             $carts = session()->get('cart');
             $cartQuantity = 0;
             if (isset($carts)){
                 $cartQuantity = count($carts);
             }
-            view()->share(['cartQuantity'=>$cartQuantity,'carts'=>$carts]);
+            view()->share([
+                'cartQuantity'=>$cartQuantity,
+                'carts'=>$carts,
+                'customer' => $customer,
+                'categories' => $categories
+            ]);
         });
     }
 }

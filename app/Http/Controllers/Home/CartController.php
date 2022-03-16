@@ -13,9 +13,19 @@ use Mail;
 use Str;
 class CartController extends Controller
 {
+    /**
+     * @var CartService
+     */
     protected $cartService;
+    /**
+     * @var CategoryRepositoryInterface
+     */
     protected $categoryRepo;
+    /**
+     * @var OrderService
+     */
     protected $orderService;
+
     public function __construct(CartService $cartService, CategoryRepositoryInterface $categoryRepository, OrderService $orderService)
     {
         $this->cartService = $cartService;
@@ -25,7 +35,7 @@ class CartController extends Controller
 
     public function add(Request $request){
         $id = $request->query('id');
-       
+
         $this->cartService->add($id);
     }
     public function addMany(Request $request){
@@ -52,7 +62,7 @@ class CartController extends Controller
         $customer = Auth::guard('customer')->user();
         return view('home.pages.checkout',compact('carts','customer'));
     }
-    public function addOrder(CheckOutRequest $request){
+    public function addOrder(Request $request){
         $carts = session()->get('cart');
         $customer = Auth::guard('customer')->user();
         if(isset($customer)){

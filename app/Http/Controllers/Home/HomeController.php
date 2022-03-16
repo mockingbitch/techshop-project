@@ -48,11 +48,6 @@ class HomeController extends Controller
         $categories = $this->categoryRepo->getAll();
         return view('home.pages.list-product',compact('products','categories'));
     }
-    public function logout()
-    {
-        Auth::guard('customer')->logout();
-        return redirect('/');
-    }
     public function search(Request $request){
         $products = $this->productRepo->search($request);
         $categories = $this->categoryRepo->getAll();

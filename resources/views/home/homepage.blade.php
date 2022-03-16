@@ -313,6 +313,7 @@
 
 <script>
     function addCart(id){
+    
         $.get('{{route('add-to-cart')}}' ,{"id":id},function(data){
             $("#listcart").load("{{route('home')}} .cart");
             swal("...", "Đã thêm vào giỏ hàng!", "success");

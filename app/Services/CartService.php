@@ -22,7 +22,7 @@ class CartService
                 'id'=>$products->id,
                 'productName'=>$products->productName,
                 'productPrice'=> $products->productPrice,
-                'quantity'=>1,
+                'quantity'=>3,
                 'productImage'=>$products->productImage
             ];
         }

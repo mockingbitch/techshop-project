@@ -108,7 +108,7 @@ Route::prefix('customer')->group(function (){
 
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/home',[HomeController::class,'index'])->name('home');
-Route::get('/logout',[HomeController::class,'logout'])->name('customer-logout');
+Route::get('/logout',[CustomerController::class,'logout'])->name('customer-logout');
 Route::get('/category/{id}',[HomeController::class,'showCategoryItems'])->name('category');
 Route::get('/product',[HomeController::class,'getAll'])->name('all-product');
 Route::get('/product/{id}',[HomeController::class,'productDetail'])->name('view-product');

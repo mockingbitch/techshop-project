@@ -10,5 +10,4 @@ class Admin extends Model implements AuthenticatableContract
 {
     use HasFactory;
     use Authenticatable;
-
 }
