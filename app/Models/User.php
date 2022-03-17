@@ -7,8 +7,15 @@ class User extends Model implements AuthenticatableContract
 {
 use HasFactory;
 use Authenticatable;
+
+    /**
+     * @var string
+     */
     protected $table = 'users';
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'userName',
         'email',

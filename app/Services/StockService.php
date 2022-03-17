@@ -12,43 +12,64 @@ use phpDocumentor\Reflection\Types\False_;
 
 class StockService
 {
+    /**
+     * @var $stockRepo
+     */
     protected $stockRepo;
+
     public function __construct(StockRepositoryInterface $stockRepository){
         $this->stockRepo = $stockRepository;
     }
-    public function subtractOrder($id,$quantity)
+
+    /**
+     * @param integer $id
+     * @param integer $quantity
+     * 
+     * @return boolean
+     */
+    public function subtractOrder(int $id, int $quantity) : boolean
     {
-        $product = Stock::where('productId',$id)->get();
+        $product = Stock::where('productId', $id)->get();
         $result = $product[0]['quantity'] - $quantity;
-        if ($result >=0){
+        if ($result >=0) {
             $product[0]->update(['quantity'=>$result]);
+
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
-    public function update($id,$request){
+
+    /**
+     * @param int $id
+     * @param int $request
+     * 
+     * @return boolean
+     */
+    public function update(int $id, int $request) : boolean
+    {
         $product = $this->stockRepo->find($id);
         $quantity = $product->quantity;
-        if (isset($request['import']) || isset($request['export'])){
-            if ($request['export']<=$quantity){
+
+        if (isset($request['import']) || isset($request['export'])) {
+            if ($request['export']<=$quantity) {
                 $newQuantity = $quantity + $request['import'] - $request['export'];
-                $this->stockRepo->update($id,['quantity'=>$newQuantity]);
+                $this->stockRepo->update($id, ['quantity'=>$newQuantity]);
                 $after = $this->stockRepo->find($id);
                 $quantityAfter = $after->quantity;
-                if ($quantityAfter==0){
-                    $this->stockRepo->update($id,['status'=>0]);
-                }else{
-                    $this->stockRepo->update($id,['status'=>1]);
+
+                if ($quantityAfter==0) { 
+                    $this->stockRepo->update($id, ['status'=>0]);
+                } else {
+                    $this->stockRepo->update($id, ['status'=>1]);
                 }
+
                 return true;
             }
+
             return false;
-        }
-        else
-        {
-            return false;
-        }
+        } 
+        
+        return false;
     }
 }

@@ -13,7 +13,9 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
     {
         return OrderDetail::class;
     }
-    public function getDetail($id){
-        return $this->model->where('orderId',$id)->get();
+
+    public function getDetail($id)
+    {
+        return $this->model->where('orderId', $id)->get();
     }
 }

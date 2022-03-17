@@ -12,9 +12,11 @@ class StockRepository extends BaseRepository implements StockRepositoryInterface
     {
         return Stock::class;
     }
+
     public function getAllProduct()
     {
-        $result = $this->model->orderBy('id','DESC')->paginate(10);
+        $result = $this->model->orderBy('id', 'DESC')->paginate(10);
+        
         return $result;
     }
 }

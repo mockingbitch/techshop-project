@@ -9,14 +9,36 @@ use App\Repositories\Contracts\RepositoryInterface\CategoryRepositoryInterface;
 use App\Repositories\Contracts\RepositoryInterface\ProductRepositoryInterface;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+    /**
+     * @var $categoryRepo
+     */
     protected $categoryRepo;
+
+    /**
+     * @var $brandRepo
+     */
     protected $brandRepo;
+    
+    /**
+     * @var $productRepo
+     */
     protected $productRepo;
+
+    /**
+     * @var $productService
+     */
     protected $productService;
 
+    /**
+     * @param ProductRepositoryInterface $productRepository
+     * @param ProductService $productService
+     * @param CategoryRepositoryInterface $categoryRepotory
+     * @param BrandRepositoryInterface $brandRepository
+     */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductService $productService,
@@ -30,61 +52,102 @@ class ProductController extends Controller
         $this->brandRepo = $brandRepository;
     }
 
-    public function index()
+    public function index() : View
     {
         $products = $this->productRepo->getAllProduct();
+
         return view('admin.product.list-product', compact('products'));
     }
 
-    public function destroy($id)
+    /**
+     * @param int $id
+     * 
+     * @return void
+     */
+    public function destroy(int $id) 
     {
         $this->productService->delete($id);
 
         return redirect()->back();
     }
 
-    public function edit($id)
+    /**
+     * @param int $id
+     * 
+     * @return View
+     */
+    public function edit(int $id) : View
     {
         $product = $this->productRepo->find($id);
 
-        return view('admin.product.edit-product',compact('product'));
+        return view('admin.product.edit-product', compact('product'));
     }
 
-    public function update($id, Request $request)
+    /**
+     * @param int $id
+     * @param Request $request
+     * 
+     * @return void
+     */
+    public function update(int $id, Request $request)
     {
         $this->productService->update($id, $request);
 
         return redirect()->route('list-product.index');
     }
-    public function create()
+
+    /**
+     * @return View
+     */
+    public function create() : View
     {
         $categories = $this->categoryRepo->getAll();
         $brands = $this->brandRepo->getAll();
-        return view('admin.product.add-product',compact('categories','brands'));
+
+        return view('admin.product.add-product', compact('categories', 'brands'));
     }
-    public function store(AddProductRequestForm $request){
+
+    /**
+     * @param AddProductRequestForm $request
+     * 
+     * @return View
+     */
+    public function store(AddProductRequestForm $request) : View
+    {
         $categories = $this->categoryRepo->getAll();
         $brands = $this->brandRepo->getAll();
         $data = $request->validated();
         $this->productService->add($data);
-        return view('admin.product.add-product',compact('categories','brands'))->with('msg','*Thêm thành công');
+
+        return view('admin.product.add-product', compact('categories', 'brands'))->with('msg', '*Thêm thành công');
 
     }
-    public function show($id)
+
+    /**
+     * @param int $id
+     * 
+     * @return View
+     */
+    public function show(int $id) : View
     {
         $categories = $this->categoryRepo->getAll();
         $brands = $this->brandRepo->getAll();
         $product = $this->productRepo->find($id);
         $product->load('category');
-        return view('admin.product.edit-product',compact('product','categories','brands'));
+        
+        return view('admin.product.edit-product', compact('product', 'categories', 'brands'));
     }
-    public function viewDetail(Request $request)
+
+    /**
+     * @param Request $request
+     * 
+     * @return void
+     */
+    public function viewDetail(Request $request) 
     {
         $id = $request->query('id');
         $product = $this->productRepo->find($id);
-        return response()->json($product);
-    }
-    public function export(){
 
+        return response()->json($product);
     }
 }

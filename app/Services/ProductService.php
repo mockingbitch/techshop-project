@@ -27,12 +27,13 @@ class ProductService
     {
         $request['productImage'] = $this->imageProcessing($request['productImage']);
         $product=$this->productRepo->create($request);
-        if ($product->productQuantity >= 1){
+
+        if ($product->productQuantity >= 1) {
             $status = 1;
-        }
-        else{
+        } else {
             $status = 0;
         }
+
         $data = [
             'productId'=>$product->id,
             'quantity'=>$product->productQuantity,
@@ -48,7 +49,7 @@ class ProductService
      * @param $id int
      * @param $request array
      */
-    public function update($id, $request)
+    public function update(int $id, $request)
     {
 
         $product = [
@@ -59,16 +60,19 @@ class ProductService
             'categoryId'=>$request->categoryId,
             'brandId'=>$request->brandId,
         ];
-        if($request->hasFile('productImage')){
+
+        if ($request->hasFile('productImage')) {
             $product['productImage'] = $this->imageProcessing($request->productImage);
         }
+
         $updateProduct = $this->productRepo->update($id, $product);
-        if ($updateProduct->productQuantity >= 1){
+
+        if ($updateProduct->productQuantity >= 1) {
             $status = 1;
-        }
-        else{
+        } else {
             $status = 0;
         }
+
         $data = [
             'productId'=>$updateProduct->id,
             'quantity'=>$updateProduct->productQuantity,
@@ -79,32 +83,53 @@ class ProductService
         ];
         $stockId = Stock::where('productId',$id)->get();
         $a = $stockId->toArray();
-        Stock::where('id',$a[0]['id'])->update($data);
+        Stock::where('id', $a[0]['id'])->update($data);
     }
+
     /**
      * @param $request array
      * @return mixed
      */
     public function imageProcessing($file)
     {
-        $productImage = uniqid('',true) . $file->getClientOriginalName();
-        $file->move('uploads/product',$productImage);
+        $productImage = uniqid('', true) . $file->getClientOriginalName();
+        $file->move('uploads/product', $productImage);
+
         return $productImage;
     }
-    public function delete($id){
-        $product = Product::where('id',$id);
-        $stock = Stock::where('productId',$id);
-        if($product && $stock){
+
+    /**
+     * @param int $id
+     * 
+     * @return [type]
+     */
+    public function delete(int $id)
+    {
+        $product = Product::where('id', $id);
+        $stock = Stock::where('productId', $id);
+
+
+        if ($product && $stock) {
             $product->delete();
             $stock->delete();
+
             return true;
         }
+
         return false;
     }
-    public function searchByPrice($request){
+
+    /**
+     * @param mixed $request
+     * 
+     * @return [type]
+     */
+    public function searchByPrice($request)
+    {
         $minPrice = $request->priceMin * 1000000 ;
         $maxPrice = $request->priceMax * 1000000;
-        $products = Product::where('productPrice','>=',$minPrice)->where('productPrice','<=',$maxPrice)->get();
+        $products = Product::where('productPrice', '>=', $minPrice)->where('productPrice', '<=', $maxPrice)->get();
+
         return $products;
     }
 }

@@ -9,7 +9,15 @@ use App\Models\Brand;
 class Product extends Model
 {
     use HasFactory;
+
+    /**
+     * @var string
+     */
     protected $table = 'products';
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'productName',
         'productDescription',
@@ -20,14 +28,27 @@ class Product extends Model
         'brandId',
         'productQuantity',
     ];
+
+    /**
+     * @return void
+     */
     public function category()
     {
         return $this->belongsTo(Category::class, 'categoryId');
     }
-    public function brand(){
-        return $this->belongsTo(Brand::class,'brandId');
+
+    /**
+     * @return void
+     */
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brandId');
     }
+
+    /**
+     * @return void
+     */
     public function stock(){
-        return $this->hasOne(Stock::class,'productId');
+        return $this->hasOne(Stock::class, 'productId');
     }
 }

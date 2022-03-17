@@ -11,7 +11,12 @@ use Str;
 
 class CustomerService
 {
-    public function create($request)
+    /**
+     * @param mixed $request
+     * 
+     * @return object
+     */
+    public function create($request) : object
     {
         $request->validate([
             'customerName'=>'required',
@@ -25,6 +30,7 @@ class CustomerService
         $token = strtoupper(Str::random(10));
         $data['rememberToken']=$token;
         $customer = Customer::create($data);
+        
         return $customer;
     }
 }

@@ -13,18 +13,48 @@ use App\Models\Cart;
 
 class OrderService
 {
+    /**
+     * @var $productRepo
+     */
     protected $productRepo;
+    
+    /**
+     * @var $orderRepo
+     */
     protected $orderRepo;
+
+    /**
+     * @var $stockService
+     */
     protected $stockService;
-    public function __construct(ProductRepositoryInterface $productRepository ,
-                                OrderRepositoryInterface $orderRepository,
-                                StockService $stockService)
+
+    /**
+     * @param ProductRepositoryInterface $productRepository
+     * @param OrderRepositoryInterface $orderRepository
+     * @param StockService $stockService
+     */
+    public function __construct(
+        ProductRepositoryInterface $productRepository ,
+        OrderRepositoryInterface $orderRepository,
+        StockService $stockService
+    )
     {
         $this->productRepo = $productRepository;
         $this->orderRepo = $orderRepository;
         $this->stockService = $stockService;
     }
-    public function add($request,$subTotal,$code,$carts,$customerId){
+
+    /**
+     * @param mixed $request
+     * @param int $subTotal
+     * @param mixed $code
+     * @param mixed $carts
+     * @param int $customerId
+     * 
+     * @return [type]
+     */
+    public function add($request, int $subTotal, $code, $carts, int $customerId)
+    {
         $order=[
             'customerId'=>$customerId,
             'customerName'=>$request->customerName,
@@ -37,7 +67,8 @@ class OrderService
             'code'=>$code
         ];
        $addOrder = Order::create($order);
-       foreach ($carts as $cart){
+
+       foreach ($carts as $cart) {
            $orderDetail = [
                'orderId'=>$addOrder->id,
                'productId'=>$cart['id'],
@@ -48,16 +79,25 @@ class OrderService
                'productImage'=>$cart['productImage'],
                'code'=>$code,
            ];
-           $order = $this->stockService->subtractOrder($orderDetail['productId'],$orderDetail['quantity']);
-           if ($order!=false){
+           $order = $this->stockService->subtractOrder($orderDetail['productId'], $orderDetail['quantity']);
+
+           if ($order!=false) {
                 OrderDetail::create($orderDetail);
            }
 
        }
     }
-    public function subTotal($carts){
+
+    /**
+     * @param mixed $carts
+     * 
+     * @return [type]
+     */
+    public function subTotal($carts)
+    {
         $subTotal = 0;
-        foreach ($carts as $cart){
+
+        foreach ($carts as $cart) {
             $orderDetail = [
                 'quantity'=>$cart['quantity'],
                 'productPrice'=>$cart['productPrice'],
@@ -66,37 +106,72 @@ class OrderService
             $total = $orderDetail['total'];
             $subTotal += $total;
         }
+
         return $subTotal;
     }
-    public function handle($id,$request){
+
+    /**
+     * @param int $id
+     * @param mixed $request
+     * 
+     * @return [type]
+     */
+    public function handle(int $id, $request) 
+    {
         $order = $this->orderRepo->find($id);
-        if($order){
-            $result = $this->orderRepo->update($id,$request);
+
+        if ($order) {
+            $result = $this->orderRepo->update($id, $request);
+
             return $result;
         }
+
         return false;
     }
-    public function getOrders($id){
-        $orderDetails = OrderDetail::where('orderId',$id)->get();
+
+    /**
+     * @param int $id
+     * 
+     * @return [type]
+     */
+    public function getOrders(int $id) 
+    {
+        $orderDetails = OrderDetail::where('orderId', $id)->get();
+
         return $orderDetails;
     }
-    public function confirm($id){
+
+    /**
+     * @param int $id
+     * 
+     * @return [type]
+     */
+    public function confirm(int $id) 
+    {
         $data = ['status'=>1];
         $order = $this->orderRepo->find($id);
-        if ($order['status']==1 || $order['status']==2){
+        if ($order['status']==1 || $order['status']==2) {
             $msg = '*Đơn hàng đã được xử lý';
+
             return false;
-        }else{
-            $this->orderRepo->update($id,$data);
+        } else {
+            $this->orderRepo->update($id, $data);
         }
     }
-    public function shipping($id){
+
+    /**
+     * @param int $id
+     * 
+     * @return [type]
+     */
+    public function shipping(int $id)
+    {
         $data = ['status'=>2];
         $order = $this->orderRepo->find($id);
-        if ($order['status']==0 || $order['status']==2){
+        if ($order['status']==0 || $order['status']==2) {
             return false;
-        }else{
-            $this->orderRepo->update($id,$data);
+        } else {
+            $this->orderRepo->update($id, $data);
         }
     }
 }

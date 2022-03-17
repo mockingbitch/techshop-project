@@ -11,73 +11,134 @@ use App\Http\Requests\CheckOutRequest;
 use Illuminate\Support\Facades\Auth;
 use Mail;
 use Str;
+use Illuminate\View\View;
+
 class CartController extends Controller
 {
     /**
      * @var CartService
      */
     protected $cartService;
+
     /**
      * @var CategoryRepositoryInterface
      */
     protected $categoryRepo;
+
     /**
      * @var OrderService
      */
     protected $orderService;
 
-    public function __construct(CartService $cartService, CategoryRepositoryInterface $categoryRepository, OrderService $orderService)
+    /**
+     * @param CartService $cartService
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param OrderService $orderService
+     */
+    public function __construct(
+        CartService $cartService, 
+        CategoryRepositoryInterface $categoryRepository, 
+        OrderService $orderService
+    )
     {
         $this->cartService = $cartService;
         $this->categoryRepo = $categoryRepository;
         $this->orderService = $orderService;
     }
 
-    public function add(Request $request){
+    /**
+     * @param Request $request
+     * 
+     * @return void
+     */
+    public function add(Request $request) : void
+    {
         $id = $request->query('id');
 
         $this->cartService->add($id);
     }
-    public function addMany(Request $request){
+
+    /**
+     * @param Request $request
+     * 
+     * @return void
+     */
+    public function addMany(Request $request) : void
+    {
         $id = $request->query('id');
         $quantity = $request->query('quantity');
-        $this->cartService->addMany($id,$quantity);
+        $this->cartService->addMany($id, $quantity);
     }
-    public function index(){
+
+    /**
+     * @return View
+     */
+    public function index() : View
+    {
         $carts = session()->get('cart');
         $categories = $this->categoryRepo->getAll();
-        return view('home.pages.view-cart',compact('carts','categories'));
+
+        return view('home.pages.view-cart', compact('carts', 'categories'));
     }
-    public function update(Request $request){
+
+    /**
+     * @param Request $request
+     * 
+     * @return void
+     */
+    public function update(Request $request) : void
+    {
         $id = $request->query('id');
         $quantity = $request->query('quantity');
-        $this->cartService->update($id,$quantity);
+        $this->cartService->update($id, $quantity);
     }
-    public function delete(Request $request){
+
+    /**
+     * @param Request $request
+     * 
+     * @return void
+     */
+    public function delete(Request $request) : void
+    {
         $id = $request->query('id');
         $this->cartService->delete($id);
     }
-    public function checkOut(){
+
+    /**
+     * @return View
+     */
+    public function checkOut() : View
+    {
         $carts = session()->get('cart');
         $customer = Auth::guard('customer')->user();
-        return view('home.pages.checkout',compact('carts','customer'));
+
+        return view('home.pages.checkout', compact('carts', 'customer'));
     }
-    public function addOrder(Request $request){
+
+    /**
+     * @param Request $request
+     * 
+     * @return View
+     */
+    public function addOrder(Request $request) : View
+    {
         $carts = session()->get('cart');
         $customer = Auth::guard('customer')->user();
-        if(isset($customer)){
+
+        if (isset($customer)) {
             $customerId = $customer->id;
-        }
-        else{
+        } else {
             $customerId = 2;
         }
-        if (isset($carts)){
-            $checkOut = $this->cartService->checkOut($carts,$request);
+
+        if (isset($carts)) {
+            $checkOut = $this->cartService->checkOut($carts, $request);
             $code = strtoupper(Str::random(10));
             $subTotal = $this->orderService->subTotal($carts);
-            $this->orderService->add($request,$subTotal,$code,$carts,$customerId);
+            $this->orderService->add($request, $subTotal, $code, $carts, $customerId);
             session()->forget('cart');
         }
+
         return view('home.pages.thank-you');
     }
 }

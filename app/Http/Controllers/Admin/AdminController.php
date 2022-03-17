@@ -9,20 +9,28 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
-    {
-            // $countProduct = $this->get('countProduct');
-            $admin = Auth::guard('admin')->user();
-            return view('admin.adminLayout',['user'=>$admin]);
+    public function index() : View
+    {  // $countProduct = $this->get('countProduct');
+        $admin = Auth::guard('admin')->user();
+
+        return view('admin.adminLayout', ['user'=>$admin]);
     }
-    public function onlyfan(){
+    
+    /**
+     * @return View
+     */
+    public function onlyfan() : View
+    {
         return view('admin.pages.maincontent');
     }
-    public function viewProfile(){
+
+    /**
+     * @return View
+     */
+    public function viewProfile() : View
+    {
         return view('admin.user.admin-profile');
     }
 }

@@ -8,8 +8,15 @@ use App\Models\Order;
 class OrderDetail extends Model
 {
     use HasFactory;
+
+    /**
+     * @var string
+     */
     protected $table = 'orderdetails';
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'orderId',
         'productId',
@@ -20,6 +27,9 @@ class OrderDetail extends Model
         'productImage',
         'code',
     ];
+    /**
+     * @return void
+     */
     public function order()
     {
         return $this->belongsTo(Order::class, 'orderId');

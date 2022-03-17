@@ -8,8 +8,15 @@ use App\Models\Customer;
 class Order extends Model
 {
     use HasFactory;
+
+    /**
+     * @var string
+     */
     protected $table = 'orders';
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'customerId',
         'customerName',
@@ -21,6 +28,10 @@ class Order extends Model
         'subTotal',
         'code',
     ];
+
+    /**
+     * @return [type]
+     */
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customerId');
